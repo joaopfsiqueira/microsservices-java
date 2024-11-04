@@ -1,6 +1,7 @@
 package br.com.joaopfsiqueira.pedidos.api.controller;
 
 import br.com.joaopfsiqueira.pedidos.api.entity.Pedido;
+import br.com.joaopfsiqueira.pedidos.api.service.PedidoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +24,14 @@ public class PedidoController {
     // usado para logar algo!
     private final Logger logger = LoggerFactory.getLogger(PedidoController.class);
 
+    // instanciando o PedidoService via constructor, lembrando que poderia usar o @Autowired
+    // assim como o exemplo no PedidoService
+    private final PedidoService pedidoService;
+    public PedidoController(PedidoService pedidoService) {
+        this.pedidoService = pedidoService;
+    }
+
+
     @Operation(summary = "Cria um pedido", description = "contem as operações para criar um novo pedido",
             responses = @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
                     content = @Content(mediaType = "application/json",
@@ -30,6 +39,7 @@ public class PedidoController {
     @PostMapping // Usado para mapear solicitações HTTP POST para métodos de manipulação de solicitações
     public ResponseEntity<Pedido> criarPedido(@RequestBody Pedido pedido) {
         logger.info("Pedido recebido: {}", pedido.toString());
+        pedido = pedidoService.enfileirarPedido(pedido);
         return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
     }
 }
