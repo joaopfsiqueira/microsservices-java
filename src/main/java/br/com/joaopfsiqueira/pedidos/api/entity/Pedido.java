@@ -18,11 +18,12 @@ public class Pedido {
 
     private UUID id = UUID.randomUUID();
     private String cliente;
-    private List<ItemPedido> itemPedidos  = new ArrayList<>();
+    private List<ItemPedido> itens  = new ArrayList<>();
     private Double valorTotal;
     private String emailNotificacao;
-    private Status status;
+    private Status status = Status.EM_PROCESSAMENTO;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-    private LocalDateTime dataHora;
+    private LocalDateTime dataHora = LocalDateTime.now(); // na criação do pedido, a data e hora atual é atribuída
+
 
 }
